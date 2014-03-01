@@ -36,9 +36,9 @@ $overlay
 
 // set downtime properties
 $overlay
-    ->enableDowntime(false)
+    ->enableDowntime(true)
     ->setDowntimeImagePath('offline.png')
-    ->setDowntimeImagePosition('topleft')
+    ->setDowntimeImagePosition('center')
     ->setDowntimeStart('20:00:00')
     ->setDowntimeEnd('08:00:00');
 

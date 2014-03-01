@@ -699,7 +699,7 @@ class WebcamOverlay
                 $this->downtimeImage,
                 $position['x'],
                 $position['y'],
-                Image::MERGE_SCALE_DST
+                Image::MERGE_SCALE_DST_NO_UPSCALE
             );
 
             unset($this->downtimeImage);
