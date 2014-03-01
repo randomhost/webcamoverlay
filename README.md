@@ -1,10 +1,10 @@
-PHP-Webcam-Overlay
+PHP_Webcam_Overlay
 ==================
 
-This PHP script was developed to compensate for the lack of image overlay
-capabilities of some less sophisticated IP cameras. It takes the original
-image as uploaded by the camera from the web server and uses the GD library
-to modify the image on the fly before displaying it to the website visitor.
+This package was developed to compensate for the lack of image overlay
+capabilities of some less sophisticated IP cameras. It takes the original image
+as uploaded by the camera from the web server and uses the GD library to modify
+the image on the fly before displaying it to the website visitor.
 
 **Features:**
 
@@ -13,38 +13,45 @@ to modify the image on the fly before displaying it to the website visitor.
 - configurable timed overlay image ("downtime" picture)
 - Yahoo Weather API integration
 
-Requirements
-------------
-- PHP 5.3 or newer
-- GD
-- SimpleXML
+System-Wide Installation
+------------------------
 
-Directory structure
--------------------
+PHP_Webcam_Overlay should be installed using the [PEAR Installer](http://pear.php.net).
+This installer is the PHP community's de-facto standard for installing PHP
+components.
 
-The script was designed to run outside the document root of the webserver
-so internal files are kept away from the public. Otherwise, someone could
-guess the filename of your webcam image and simply open that directly without
-any overlay.
+    sudo pear channel-discover pear.random-host.com
+    sudo pear install --alldeps randomhost/PHP_Webcam_Overlay
 
-All public files are located in the `htdocs` folder while everything else is
-kept one level below. In this documentation, we assume the document root to
-be the `htdocs` folder and the directory structure to be the same as in the
-original setup.
+As A Dependency On Your Component
+---------------------------------
 
-- **fonts** - holds .ttf files of the fonts you want to use for text overlays
-- **htdocs** - holds all files which should be accessible from outside
-- **images** - holds the uploaded webcam image, overlay and downtime images
-- **include** - holds all internal PHP class files used by this script
+If you are creating a component that relies on PHP_Webcam_Overlay, please make
+sure that you add PHP_Webcam_Overlay to your component's package.xml file:
+
+```xml
+<dependencies>
+  <required>
+    <package>
+      <name>PHP_Webcam_Overlay</name>
+      <channel>pear.random-host.com</channel>
+      <min>1.0.0</min>
+      <max>1.999.9999</max>
+    </package>
+  </required>
+</dependencies>
+```
 
 Usage
 -----
 
-A basic approach at using this script could look like this:
+A basic approach at using this package could look like this:
 
 ```php
 <?php
-require_once( '../include/class/WebcamOverlay.class.php' );
+namespace randomhost\Image;
+
+require 'psr0.autoloader.php';
 
 // get WebcamOverlay instance
 $overlay = new WebcamOverlay();
@@ -55,45 +62,49 @@ $overlay->setWebcamImagePath( 'webcam.jpg' );
 // render image
 $overlay->render();
 ```
-    
-This will instanciate the class, set the name of the uploaded webcam image and
+
+This will instantiate the class, set the name of the uploaded webcam image and
 just render it without any overlay.
 
-Assuming that you named this file `overlay.php`, you should now be able to
-access your webcam image at `http://example.com/overlay.php`
+Assuming that you named this file `webcam.php`, you should now be able to
+access your webcam image at `http://example.com/webcam.php`
 
+A more detailed example can be found in `src/www/webcam/index.php` which will
+also be installed to your PEAR www directory (usually `/usr/share/php/htdocs`).
 
-Advanced Usage
---------------
+Development Environment
+-----------------------
 
-Take a look at the provided `overlay.php` file which comes with an advanced
-example configuration including all available options.
+If you want to patch or enhance this component, you will need to create a
+suitable development environment. The easiest way to do that is to install
+phix4componentdev:
 
-The `htdocs` folder contains a `.htaccess` file which shows how one could write
-a rewrite rule (assuming that you are running *apache2* with *mod_rewrite* enabled)
-which makes the webcam image avaiblable at `http://example.com/image.png`.
+    # phix4componentdev
+    sudo apt-get install php5-xdebug
+    sudo apt-get install php5-imagick
+    sudo pear channel-discover pear.phix-project.org
+    sudo pear -D auto_discover=1 install -Ba phix/phix4componentdev
+
+You can then clone the git repository:
+
+    # PHP_Webcam_Overlay
+    git clone https://github.com/Chi-Yu/PHP_Webcam_Overlay.git
+
+Then, install a local copy of this component's dependencies to complete the
+development environment:
+
+    # build vendor/ folder
+    phing build-vendor
+
+To make life easier for you, common tasks (such as running unit tests,
+generating code review analytics, and creating the PEAR package) have been
+automated using [phing](http://phing.info).  You'll find the automated steps
+inside the build.xml file that ships with the component.
+
+Run the command 'phing' in the component's top-level folder to see the full list
+of available automated tasks.
 
 License
 -------
 
-<pre>
-Copyright (c) 2013 random-host.com
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-</pre>
+See LICENSE.txt for full license details.

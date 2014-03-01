@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.1" version="2.0"
+         xmlns="http://pear.php.net/dtd/package-2.0"
+         xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+    <name>${project.name}</name>
+    <channel>${project.channel}</channel>
+    <summary>Provides image overlay functionality for IP cam images.</summary>
+    <description>
+        This package was developed to compensate for the lack of image overlay
+        capabilities of some less sophisticated IP cameras. It takes the
+        original image as uploaded by the camera from the web server and uses
+        the GD library to modify the image on the fly before displaying it to
+        the website visitor.
+    </description>
+    <lead>
+        <name>Ch'Ih-Yu</name>
+        <user>chi-yu</user>
+        <email>chi-yu@web.de</email>
+        <active>yes</active>
+    </lead>
+    <date>${build.date}</date>
+    <time>${build.time}</time>
+    <version>
+        <release>${project.version}</release>
+        <api>${project.majorVersion}.${project.minorVersion}</api>
+    </version>
+    <stability>
+        <release>${project.stability}</release>
+        <api>stable</api>
+    </stability>
+    <license>New-BSD</license>
+    <notes>
+        See https://github.com/Chi-Yu/${project.name}/ for more details.
+    </notes>
+    <contents>
+        <dir baseinstalldir="/" name="/">
+            ${contents}
+        </dir>
+    </contents>
+    <dependencies>
+        <required>
+            <php>
+                <min>5.3.0</min>
+            </php>
+            <pearinstaller>
+                <min>1.9.4</min>
+            </pearinstaller>
+            <package>
+                <name>Autoloader</name>
+                <channel>pear.phix-project.org</channel>
+                <min>3.0.0</min>
+                <max>3.999.9999</max>
+            </package>
+            <package>
+                <name>PHP_Image</name>
+                <channel>pear.random-host.com</channel>
+                <min>0.1.0</min>
+                <max>1.999.9999</max>
+            </package>
+        </required>
+    </dependencies>
+    <phprelease/>
+    <changelog>
+        <release>
+            <version>
+                <release>0.1.0</release>
+                <api>0.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <date>2013-06-02</date>
+            <license>New-BSD</license>
+            <notes>
+                See https://github.com/Chi-Yu/${project.name}/ for more
+                details.
+            </notes>
+        </release>
+    </changelog>
+</package>
+<!-- vim: set tabstop=4 shiftwidth=4 expandtab:4 -->
