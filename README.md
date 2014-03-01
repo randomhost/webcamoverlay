@@ -51,6 +51,8 @@ A basic approach at using this package could look like this:
 <?php
 namespace randomhost\Image;
 
+require 'psr0.autoloader.php';
+
 // get WebcamOverlay instance
 $overlay = new WebcamOverlay();
 
@@ -61,11 +63,14 @@ $overlay->setWebcamImagePath( 'webcam.jpg' );
 $overlay->render();
 ```
 
-This will instanciate the class, set the name of the uploaded webcam image and
+This will instantiate the class, set the name of the uploaded webcam image and
 just render it without any overlay.
 
-Assuming that you named this file `overlay.php`, you should now be able to
-access your webcam image at `http://example.com/overlay.php`
+Assuming that you named this file `webcam.php`, you should now be able to
+access your webcam image at `http://example.com/webcam.php`
+
+A more detailed example can be found in `src/www/webcam/index.php` which will
+also be installed to your PEAR www directory (usually `/usr/share/php/htdocs`).
 
 Development Environment
 -----------------------

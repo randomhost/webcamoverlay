@@ -56,6 +56,12 @@
                 <min>3.0.0</min>
                 <max>3.999.9999</max>
             </package>
+            <package>
+                <name>PHP-Image</name>
+                <channel>pear.random-host.com</channel>
+                <min>1.0.0</min>
+                <max>1.999.9999</max>
+            </package>
         </required>
     </dependencies>
     <phprelease/>
