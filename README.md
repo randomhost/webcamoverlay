@@ -1,4 +1,4 @@
-PHP-Webcam-Overlay
+PHP_Webcam_Overlay
 ==================
 
 This package was developed to compensate for the lack of image overlay
@@ -16,24 +16,24 @@ the image on the fly before displaying it to the website visitor.
 System-Wide Installation
 ------------------------
 
-PHP-Webcam-Overlay should be installed using the [PEAR Installer](http://pear.php.net).
+PHP_Webcam_Overlay should be installed using the [PEAR Installer](http://pear.php.net).
 This installer is the PHP community's de-facto standard for installing PHP
 components.
 
     sudo pear channel-discover pear.random-host.com
-    sudo pear install --alldeps randomhost/PHP-Webcam-Overlay
+    sudo pear install --alldeps randomhost/PHP_Webcam_Overlay
 
 As A Dependency On Your Component
 ---------------------------------
 
-If you are creating a component that relies on PHP-Webcam-Overlay, please make
-sure that you add PHP-Webcam-Overlay to your component's package.xml file:
+If you are creating a component that relies on PHP_Webcam_Overlay, please make
+sure that you add PHP_Webcam_Overlay to your component's package.xml file:
 
 ```xml
 <dependencies>
   <required>
     <package>
-      <name>PHP-Webcam-Overlay</name>
+      <name>PHP_Webcam_Overlay</name>
       <channel>pear.random-host.com</channel>
       <min>1.0.0</min>
       <max>1.999.9999</max>
@@ -82,8 +82,8 @@ phix4componentdev:
 
 You can then clone the git repository:
 
-    # PHP-Webcam-Overlay
-    git clone https://github.com/Chi-Yu/PHP-Webcam-Overlay.git
+    # PHP_Webcam_Overlay
+    git clone https://github.com/Chi-Yu/PHP_Webcam_Overlay.git
 
 Then, install a local copy of this component's dependencies to complete the
 development environment:
