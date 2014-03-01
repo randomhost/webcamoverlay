@@ -816,14 +816,26 @@ class WebcamOverlay
      * @param string $position One of $this->validImagePositions.
      *
      * @return array Array containing x and y coordinates.
-     *
-     * @todo This does not work correctly if the overlay image is scaled.
      */
     protected function determineOverlayPosition(
         Image $target, Image $overlay, $position
     ) {
 
         $coordinates = array();
+
+        /**
+         * The overlay image might be bigger than the target image. In this
+         * case, we need to use the target image dimensions to determine the
+         * positions.
+         */
+        $overlayWidth = $overlay->getWidth();
+        if ($overlayWidth > $target->getWidth()) {
+            $overlayWidth = $target->getWidth();
+        }
+        $overlayHeight = $overlay->getHeight();
+        if ($overlayHeight > $target->getHeight()) {
+            $overlayHeight = $target->getHeight();
+        }
 
         switch ($position) {
 
@@ -833,23 +845,23 @@ class WebcamOverlay
             break;
 
         case 'topright':
-            $coordinates['x'] = $target->getWidth() - $overlay->getWidth();
+            $coordinates['x'] = $target->getWidth() - $overlayWidth;
             $coordinates['y'] = 0;
             break;
 
         case 'bottomleft':
             $coordinates['x'] = 0;
-            $coordinates['y'] = $target->getHeight() - $overlay->getHeight();
+            $coordinates['y'] = $target->getHeight() - $overlayHeight;
             break;
 
         case 'bottomright':
-            $coordinates['x'] = $target->getWidth() - $overlay->getWidth();
-            $coordinates['y'] = $target->getHeight() - $overlay->getHeight();
+            $coordinates['x'] = $target->getWidth() - $overlayWidth;
+            $coordinates['y'] = $target->getHeight() - $overlayHeight;
             break;
 
         case 'center':
-            $coordinates['x'] = $target->getWidth() - ($overlay->getWidth() / 2);
-            $coordinates['y'] = $target->getHeight() - ($overlay->getHeight() / 2);
+            $coordinates['x'] = ($target->getWidth() / 2) - ($overlayWidth / 2);
+            $coordinates['y'] = ($target->getHeight() / 2) - ($overlayHeight / 2);
             break;
 
         default:
