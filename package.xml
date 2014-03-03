@@ -35,7 +35,7 @@
     </stability>
     <license>New-BSD</license>
     <notes>
-        See https://github.com/Chi-Yu/${project.name}/ for more details.
+        See https://github.com/Random-Host/${project.name}/ for more details.
     </notes>
     <contents>
         <dir baseinstalldir="/" name="/">
@@ -78,7 +78,7 @@
             <date>2013-06-02</date>
             <license>New-BSD</license>
             <notes>
-                See https://github.com/Chi-Yu/${project.name}/ for more
+                See https://github.com/Random-Host/${project.name}/ for more
                 details.
             </notes>
         </release>
