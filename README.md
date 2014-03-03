@@ -88,7 +88,7 @@ phix4componentdev:
 You can then clone the git repository:
 
     # PHP_Webcam_Overlay
-    git clone https://github.com/Chi-Yu/PHP_Webcam_Overlay.git
+    git clone https://github.com/Random-Host/PHP_Webcam_Overlay.git
 
 Then, install a local copy of this component's dependencies to complete the
 development environment:
