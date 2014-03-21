@@ -31,7 +31,7 @@
     </version>
     <stability>
         <release>${project.stability}</release>
-        <api>stable</api>
+        <api>alpha</api>
     </stability>
     <license>New-BSD</license>
     <notes>
