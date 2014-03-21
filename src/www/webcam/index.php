@@ -30,13 +30,13 @@ $overlay
 
 // set watermark properties
 $overlay
-    ->enableWatermark(true)
+    ->setWatermarkEnabled(true)
     ->setWatermarkImagePath('watermark.png')
     ->setWatermarkImagePosition('topright');
 
 // set downtime properties
 $overlay
-    ->enableDowntime(true)
+    ->setDowntimeEnabled(true)
     ->setDowntimeImagePath('offline.png')
     ->setDowntimeImagePosition('center')
     ->setDowntimeStart('20:00:00')
@@ -44,14 +44,14 @@ $overlay
 
 // set informational text properties
 $overlay
-    ->enableInfotext(true)
+    ->setInfotextEnabled(true)
     ->setInfotextContent(' (c) example.com')
     ->setInfotextFont('vera.ttf')
     ->setInfotextFontSize(9)
     ->setInfotextPositionX(3)
     ->setInfotextPositionY(178)
     ->setInfotextColor(array(255, 255, 255))
-    ->enableInfotextBorder(true)
+    ->setInfotextBorderEnabled(true)
     ->setInfotextBorderColor(array(50, 50, 50));
 
 // render image
