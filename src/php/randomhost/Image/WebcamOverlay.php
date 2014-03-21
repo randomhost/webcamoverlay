@@ -33,20 +33,6 @@ namespace randomhost\Image;
 class WebcamOverlay
 {
     /**
-     * Image directory (relative path)
-     *
-     * @var string
-     */
-    const IMAGE_DIR = '../../images/';
-
-    /**
-     * Fonts directory (relative path)
-     *
-     * @var string
-     */
-    const FONTS_DIR = '../../fonts/';
-
-    /**
      * Output image instance
      *
      * @var Image
@@ -81,7 +67,7 @@ class WebcamOverlay
      *
      * @var bool
      */
-    protected $enableWatermark = false;
+    protected $watermarkEnabled = false;
 
     /**
      * Watermark image instance
@@ -111,7 +97,7 @@ class WebcamOverlay
      *
      * @var bool
      */
-    protected $enableDowntime = false;
+    protected $downtimeEnabled = false;
 
     /**
      * Downtime image instance
@@ -159,7 +145,7 @@ class WebcamOverlay
      *
      * @var bool
      */
-    protected $enableInfotext = false;
+    protected $infotextEnabled = false;
 
     /**
      * Informational text content
@@ -211,7 +197,7 @@ class WebcamOverlay
      *
      * @var bool
      */
-    protected $enableInfotextBorder = true;
+    protected $infotextBorderEnabled = true;
 
     /**
      * Informational text border color
@@ -272,9 +258,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function enableWatermark($bool)
+    public function setWatermarkEnabled($bool)
     {
-        $this->enableWatermark = (bool)$bool;
+        $this->watermarkEnabled = (bool)$bool;
 
         return $this;
     }
@@ -317,9 +303,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function enableDowntime($bool)
+    public function setDowntimeEnabled($bool)
     {
-        $this->enableDowntime = (bool)$bool;
+        $this->downtimeEnabled = (bool)$bool;
 
         return $this;
     }
@@ -396,9 +382,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function enableInfotext($bool)
+    public function setInfotextEnabled($bool)
     {
-        $this->enableInfotext = (bool)$bool;
+        $this->infotextEnabled = (bool)$bool;
         return $this;
     }
 
@@ -492,9 +478,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function enableInfotextBorder($bool)
+    public function setInfotextBorderEnabled($bool)
     {
-        $this->enableInfotextBorder = (bool)$bool;
+        $this->infotextBorderEnabled = (bool)$bool;
         return $this;
     }
 
@@ -534,7 +520,7 @@ class WebcamOverlay
     public function render()
     {
         // read watermark image
-        if (!empty($this->enableWatermark)) {
+        if (!empty($this->watermarkEnabled)) {
             $this->watermarkImage = Image::getInstanceByPath(
                 $this->watermarkImagePath
             );
@@ -603,7 +589,7 @@ class WebcamOverlay
             if (!$this->isDownTime()) {
 
                 // insert infotext
-                if ($this->enableInfotext) {
+                if ($this->infotextEnabled) {
 
                     // insert "Last modified" overlay
                     $lastModified = date(
@@ -617,53 +603,44 @@ class WebcamOverlay
                         $this->infotextContent
                     );
 
-                    // set basic text properties
-                    $this->outputImage->setTextFont(
-                        $this->infotextFont
-                    );
-                    $this->outputImage->setTextSize($this->infotextFontSize);
-                    $textPosX = $this->infotextPositionX;
-                    $textPosY = $this->infotextPositionY;
+                    // setup generic text object
+                    $textOverlay = new Text\Generic($this->outputImage);
+                    $textOverlay
+                        ->setTextFont($this->infotextFont)
+                        ->setTextSize($this->infotextFontSize)
+                        ->setTextColor(
+                            new Color(
+                                $this->infotextColor[0],
+                                $this->infotextColor[1],
+                                $this->infotextColor[2]
+                            )
+                        );
 
-                    // render border
-                    if ($this->enableInfotextBorder) {
-                        $this->outputImage->setTextColor(
-                            $this->infotextBorderColor
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX - 1, $textPosY - 1, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX - 1, $textPosY, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX - 1, $textPosY + 1, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX, $textPosY - 1, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX, $textPosY + 1, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX + 1, $textPosY - 1, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX + 1, $textPosY, $text
-                        );
-                        $this->outputImage->insertText(
-                            $textPosX + 1, $textPosY + 1, $text
+                    // setup border text decorator
+                    if ($this->infotextBorderEnabled) {
+                        $textOverlay = new Text\Decorator\Border($textOverlay);
+                        $textOverlay->setBorderColor(
+                            new Color(
+                                $this->infotextBorderColor[0],
+                                $this->infotextBorderColor[1],
+                                $this->infotextBorderColor[2]
+                            )
                         );
                     }
 
                     // render text
-                    $this->outputImage->setTextColor($this->infotextColor);
-                    $this->outputImage->insertText($textPosX, $textPosY, $text);
-
+                    $textOverlay->insertText(
+                        $this->infotextPositionX,
+                        $this->infotextPositionY,
+                        $text
+                    );
+                    
+                    // clean up
+                    unset($textOverlay);
                 }
 
                 // insert watermark
-                if ($this->enableWatermark) {
+                if ($this->watermarkEnabled) {
 
                     // determine numeric position
                     $position = $this->determineOverlayPosition(
@@ -778,7 +755,7 @@ class WebcamOverlay
      */
     protected function isDownTime()
     {
-        if (!$this->enableDowntime) {
+        if (!$this->downtimeEnabled) {
             return false;
         }
 
