@@ -68,16 +68,36 @@
     <changelog>
         <release>
             <version>
-                <release>0.1.0</release>
-                <api>0.0</api>
+                <release>0.2.0</release>
+                <api>0.2</api>
             </version>
             <stability>
-                <release>stable</release>
-                <api>stable</api>
+                <release>alpha</release>
+                <api>alpha</api>
             </stability>
-            <date>2013-06-02</date>
+            <date>2014-03-21</date>
             <license>New-BSD</license>
             <notes>
+                Moved text overlay related functionality into dedicated objects.
+
+                See https://github.com/Random-Host/${project.name}/ for more
+                details.
+            </notes>
+        </release>
+        <release>
+            <version>
+                <release>0.1.0</release>
+                <api>0.1</api>
+            </version>
+            <stability>
+                <release>alpha</release>
+                <api>alpha</api>
+            </stability>
+            <date>2014-03-01</date>
+            <license>New-BSD</license>
+            <notes>
+                Initial PEAR packaged version
+
                 See https://github.com/Random-Host/${project.name}/ for more
                 details.
             </notes>
