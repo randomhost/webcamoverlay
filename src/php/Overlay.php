@@ -1,36 +1,23 @@
 <?php
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+namespace randomhost\Image\Webcam;
 
-/**
- * WebcamOverlay class definition
- *
- * PHP version 5
- *
- * @category  Image
- * @package   PHP_Webcam_Overlay
- * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2014 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      https://pear.random-host.com/
- */
-namespace randomhost\Image;
+use randomhost\Image\Image;
+use randomhost\Image\Color;
+use randomhost\Image\Text;
 
 /**
  * Webcam Overlay
  *
  * This class takes the original image as uploaded by the camera from the
- * webserver and uses the GD library to modify the image on the fly before
+ * web server and uses the GD library to modify the image on the fly before
  * displaying it to the website visitor.
  *
- * @category  Image
- * @package   PHP_Webcam_Overlay
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2014 random-host.com
+ * @copyright 2016 random-host.com
  * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @version   Release: @package_version@
- * @link      https://pear.random-host.com/
+ * @link      http://php-image.random-host.com
  */
-class WebcamOverlay
+class Overlay
 {
     /**
      * Output image instance
@@ -145,42 +132,42 @@ class WebcamOverlay
      *
      * @var bool
      */
-    protected $infotextEnabled = false;
+    protected $infoTextEnabled = false;
 
     /**
      * Informational text content
      *
      * @var string
      */
-    protected $infotextContent = '';
+    protected $infoTextContent = '';
 
     /**
      * Informational text font file
      *
      * @var string
      */
-    protected $infotextFont = 'CALIBRI.TTF';
+    protected $infoTextFont = 'CALIBRI.TTF';
 
     /**
      * Informational text font size in pixels
      *
      * @var int
      */
-    protected $infotextFontSize = 10;
+    protected $infoTextFontSize = 10;
 
     /**
      * Informational text X position
      *
      * @var int
      */
-    protected $infotextPositionX = 5; // text x-position
+    protected $infoTextPositionX = 5; // text x-position
 
     /**
      * Informational text Y position
      *
      * @var int
      */
-    protected $infotextPositionY = 235; // text y-position
+    protected $infoTextPositionY = 235; // text y-position
 
     /**
      * Informational text color
@@ -190,14 +177,14 @@ class WebcamOverlay
      *
      * @var array
      */
-    protected $infotextColor = array(255, 255, 255);
+    protected $infoTextColor = array(255, 255, 255);
 
     /**
      * Enable/disable informational text border feature
      *
      * @var bool
      */
-    protected $infotextBorderEnabled = true;
+    protected $infoTextBorderEnabled = true;
 
     /**
      * Informational text border color
@@ -207,7 +194,7 @@ class WebcamOverlay
      *
      * @var array
      */
-    protected $infotextBorderColor = array(50, 50, 50);
+    protected $infoTextBorderColor = array(50, 50, 50);
 
     /**
      * Valid image position values
@@ -382,9 +369,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextEnabled($bool)
+    public function setInfoTextEnabled($bool)
     {
-        $this->infotextEnabled = (bool)$bool;
+        $this->infoTextEnabled = (bool)$bool;
         return $this;
     }
 
@@ -395,9 +382,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextContent($text)
+    public function setInfoTextContent($text)
     {
-        $this->infotextContent = (string)$text;
+        $this->infoTextContent = (string)$text;
         return $this;
     }
 
@@ -408,9 +395,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextFont($fontPath)
+    public function setInfoTextFont($fontPath)
     {
-        $this->infotextFont = (string)$fontPath;
+        $this->infoTextFont = (string)$fontPath;
 
         return $this;
     }
@@ -422,9 +409,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextFontSize($size)
+    public function setInfoTextFontSize($size)
     {
-        $this->infotextFontSize = (int)$size;
+        $this->infoTextFontSize = (int)$size;
         return $this;
     }
 
@@ -435,9 +422,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextPositionX($position)
+    public function setInfoTextPositionX($position)
     {
-        $this->infotextPositionX = (int)$position;
+        $this->infoTextPositionX = (int)$position;
         return $this;
     }
 
@@ -448,9 +435,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextPositionY($position)
+    public function setInfoTextPositionY($position)
     {
-        $this->infotextPositionY = (int)$position;
+        $this->infoTextPositionY = (int)$position;
         return $this;
     }
 
@@ -464,10 +451,10 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextColor(array $color)
+    public function setInfoTextColor(array $color)
     {
         $this->validateColor($color);
-        $this->infotextColor = $color;
+        $this->infoTextColor = $color;
         return $this;
     }
 
@@ -478,9 +465,9 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextBorderEnabled($bool)
+    public function setInfoTextBorderEnabled($bool)
     {
-        $this->infotextBorderEnabled = (bool)$bool;
+        $this->infoTextBorderEnabled = (bool)$bool;
         return $this;
     }
 
@@ -494,10 +481,10 @@ class WebcamOverlay
      *
      * @return $this
      */
-    public function setInfotextBorderColor(array $color)
+    public function setInfoTextBorderColor(array $color)
     {
         $this->validateColor($color);
-        $this->infotextBorderColor = $color;
+        $this->infoTextBorderColor = $color;
         return $this;
     }
 
@@ -514,7 +501,8 @@ class WebcamOverlay
     /**
      * Renders the image and sends it to the browser.
      *
-     * @return void
+     * @return $this
+     *
      * @throws \Exception
      */
     public function render()
@@ -539,7 +527,6 @@ class WebcamOverlay
                 $this->webcamImagePath
             );
         } catch (\Exception $e) {
-
             /*
              * If there is no downtime image configured and we fail to load the
              * webcam image, this is a fatal error and we pass on the exception.
@@ -558,7 +545,8 @@ class WebcamOverlay
                 $this->webcamImage->getWidth() * ($this->outputImageScale / 100)
             );
             $height = round(
-                $this->webcamImage->getHeight() * ($this->outputImageScale / 100)
+                $this->webcamImage->getHeight() * ($this->outputImageScale
+                    / 100)
             );
         } else {
             $width = round($this->downtimeImage->getWidth());
@@ -576,10 +564,12 @@ class WebcamOverlay
          * to load.
          */
         if ($this->webcamImage instanceof Image) {
-
             // insert webcam source image
             $this->outputImage->merge(
-                $this->webcamImage, 0, 0, Image::MERGE_SCALE_DST
+                $this->webcamImage,
+                0,
+                0,
+                Image::MERGE_SCALE_DST
             );
 
             /*
@@ -587,61 +577,59 @@ class WebcamOverlay
              * set downtime period.
              */
             if (!$this->isDownTime()) {
-
-                // insert infotext
-                if ($this->infotextEnabled) {
-
+                // insert info text
+                if ($this->infoTextEnabled) {
                     // insert "Last modified" overlay
                     $lastModified = date(
-                        'd.m.Y, H:i:s', $this->webcamImage->getModified()
+                        'd.m.Y, H:i:s',
+                        $this->webcamImage->getModified()
                     );
 
                     // set text
                     $text = sprintf(
                         '%1$s%2$s',
                         $lastModified,
-                        $this->infotextContent
+                        $this->infoTextContent
                     );
 
                     // setup generic text object
                     $textOverlay = new Text\Generic($this->outputImage);
                     $textOverlay
-                        ->setTextFont($this->infotextFont)
-                        ->setTextSize($this->infotextFontSize)
+                        ->setTextFont($this->infoTextFont)
+                        ->setTextSize($this->infoTextFontSize)
                         ->setTextColor(
                             new Color(
-                                $this->infotextColor[0],
-                                $this->infotextColor[1],
-                                $this->infotextColor[2]
+                                $this->infoTextColor[0],
+                                $this->infoTextColor[1],
+                                $this->infoTextColor[2]
                             )
                         );
 
                     // setup border text decorator
-                    if ($this->infotextBorderEnabled) {
+                    if ($this->infoTextBorderEnabled) {
                         $textOverlay = new Text\Decorator\Border($textOverlay);
                         $textOverlay->setBorderColor(
                             new Color(
-                                $this->infotextBorderColor[0],
-                                $this->infotextBorderColor[1],
-                                $this->infotextBorderColor[2]
+                                $this->infoTextBorderColor[0],
+                                $this->infoTextBorderColor[1],
+                                $this->infoTextBorderColor[2]
                             )
                         );
                     }
 
                     // render text
                     $textOverlay->insertText(
-                        $this->infotextPositionX,
-                        $this->infotextPositionY,
+                        $this->infoTextPositionX,
+                        $this->infoTextPositionY,
                         $text
                     );
-                    
+
                     // clean up
                     unset($textOverlay);
                 }
 
                 // insert watermark
                 if ($this->watermarkEnabled) {
-
                     // determine numeric position
                     $position = $this->determineOverlayPosition(
                         $this->outputImage,
@@ -663,7 +651,6 @@ class WebcamOverlay
 
         // insert downtime image
         if ($this->isDownTime() || !$this->webcamImage instanceof Image) {
-
             // determine numeric position
             $position = $this->determineOverlayPosition(
                 $this->outputImage,
@@ -680,14 +667,14 @@ class WebcamOverlay
             );
 
             unset($this->downtimeImage);
-
         }
-
 
         // render image
         $this->outputImage->render();
 
         unset($this->outputImage);
+
+        return $this;
     }
 
     /**
@@ -704,7 +691,7 @@ class WebcamOverlay
         if (!in_array($position, $this->validImagePositions)) {
             throw new \UnexpectedValueException(
                 sprintf(
-                    'Invalid image postion \'%1$s\'. Valid postions are: %2$s',
+                    'Invalid image position \'%1$s\'. Valid positions are: %2$s',
                     $position,
                     implode(', ', $this->validImagePositions)
                 )
@@ -764,18 +751,15 @@ class WebcamOverlay
          * better way to get around the problem that the end time might actually
          * be the next day and therefore smaller than the start time.
          */
-        $now = date('His');
+        $now = $this->getTime();
         $start = str_replace(':', '', $this->downtimeStart);
         $end = str_replace(':', '', $this->downtimeEnd);
 
         if ($start < $end) {
-
             if (($now >= $start && $now <= $end)) {
                 return true;
             }
-
         } elseif ($start > $end) {
-
             if (!($now >= $end && $now < $start)) {
                 return true;
             }
@@ -795,10 +779,14 @@ class WebcamOverlay
      * @return array Array containing x and y coordinates.
      */
     protected function determineOverlayPosition(
-        Image $target, Image $overlay, $position
+        Image $target,
+        Image $overlay,
+        $position
     ) {
-
-        $coordinates = array();
+        $coordinates = array(
+            'x' => 0,
+            'y' => 0
+        );
 
         /**
          * The overlay image might be bigger than the target image. In this
@@ -815,38 +803,44 @@ class WebcamOverlay
         }
 
         switch ($position) {
+            case 'topleft':
+                $coordinates['x'] = 0;
+                $coordinates['y'] = 0;
+                break;
 
-        case 'topleft':
-            $coordinates['x'] = 0;
-            $coordinates['y'] = 0;
-            break;
+            case 'topright':
+                $coordinates['x'] = $target->getWidth() - $overlayWidth;
+                $coordinates['y'] = 0;
+                break;
 
-        case 'topright':
-            $coordinates['x'] = $target->getWidth() - $overlayWidth;
-            $coordinates['y'] = 0;
-            break;
+            case 'bottomleft':
+                $coordinates['x'] = 0;
+                $coordinates['y'] = $target->getHeight() - $overlayHeight;
+                break;
 
-        case 'bottomleft':
-            $coordinates['x'] = 0;
-            $coordinates['y'] = $target->getHeight() - $overlayHeight;
-            break;
+            case 'bottomright':
+                $coordinates['x'] = $target->getWidth() - $overlayWidth;
+                $coordinates['y'] = $target->getHeight() - $overlayHeight;
+                break;
 
-        case 'bottomright':
-            $coordinates['x'] = $target->getWidth() - $overlayWidth;
-            $coordinates['y'] = $target->getHeight() - $overlayHeight;
-            break;
-
-        case 'center':
-            $coordinates['x'] = ($target->getWidth() / 2) - ($overlayWidth / 2);
-            $coordinates['y'] = ($target->getHeight() / 2) - ($overlayHeight / 2);
-            break;
-
-        default:
-            $coordinates['x'] = 0;
-            $coordinates['y'] = 0;
-            break;
+            case 'center':
+                $coordinates['x'] = ($target->getWidth() / 2) - ($overlayWidth
+                        / 2);
+                $coordinates['y'] = ($target->getHeight() / 2) - ($overlayHeight
+                        / 2);
+                break;
         }
 
         return $coordinates;
+    }
+
+    /**
+     * Returns the current time.
+     *
+     * @return string
+     */
+    protected function getTime()
+    {
+        return date('His');
     }
 }
