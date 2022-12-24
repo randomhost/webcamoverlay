@@ -1,47 +1,76 @@
 <?php
+
+declare(strict_types=1);
+
 namespace randomhost\Image\Webcam;
 
-use randomhost\Image\Image;
 use randomhost\Image\Color;
+use randomhost\Image\Image;
 use randomhost\Image\Text;
 
 /**
- * Webcam Overlay
+ * Provides overlays for webcam images.
  *
- * This class takes the original image as uploaded by the camera from the
- * web server and uses the GD library to modify the image on the fly before
- * displaying it to the website visitor.
+ * This class takes the original image as uploaded by the camera from the file
+ * system (e.g. an FTP upload directory) and uses the GD library to modify the
+ * image on the fly before sending in to the HTTP client.
  *
  * @author    Ch'Ih-Yu <chi-yu@web.de>
- * @copyright 2016 random-host.com
- * @license   http://www.debian.org/misc/bsd.license  BSD License (3 Clause)
- * @link      http://github.random-host.com/webcamoverlay/
+ * @copyright 2022 Random-Host.tv
+ * @license   https://opensource.org/licenses/BSD-3-Clause BSD License (3 Clause)
+ *
+ * @see https://github.random-host.tv
  */
 class Overlay
 {
     /**
-     * Output image instance
+     * Places the overlay image in the top left corner.
+     */
+    public const IMAGE_TOP_LEFT = 'top-left';
+
+    /**
+     * Places the overlay image in the top right corner.
+     */
+    public const IMAGE_TOP_RIGHT = 'top-right';
+
+    /**
+     * Places the overlay image in the bottom left corner.
+     */
+    public const IMG_BOTTOM_LEFT = 'bottom-left';
+
+    /**
+     * Places the overlay image in the bottom right corner.
+     */
+    public const IMG_BOTTOM_RIGHT = 'bottom-right';
+
+    /**
+     * Places the overlay image in the center.
+     */
+    public const IMG_CENTER = 'center';
+
+    /**
+     * Output image instance.
      *
      * @var Image
      */
     protected $outputImage;
 
     /**
-     * Output image scale (percent) based on webcam source image
+     * Output image scale (percent) based on webcam source image.
      *
      * @var int
      */
     protected $outputImageScale = 100;
 
     /**
-     * Webcam source image instance
+     * Webcam source image instance.
      *
      * @var Image
      */
     protected $webcamImage;
 
     /**
-     * Webcam source image path
+     * Webcam source image path.
      *
      * Supported image formats: GIF, JPEG, PNG
      *
@@ -50,21 +79,21 @@ class Overlay
     protected $webcamImagePath = '';
 
     /**
-     * Enable/disable watermark feature
+     * Enable/disable watermark feature.
      *
      * @var bool
      */
     protected $watermarkEnabled = false;
 
     /**
-     * Watermark image instance
+     * Watermark image instance.
      *
      * @var Image
      */
     protected $watermarkImage;
 
     /**
-     * Watermark image path
+     * Watermark image path.
      *
      * Supported image formats: GIF, JPEG, PNG
      *
@@ -73,28 +102,28 @@ class Overlay
     protected $watermarkImagePath = '';
 
     /**
-     * Watermark image position
+     * Watermark image position.
      *
      * @var string
      */
-    protected $watermarkImagePostion = 'topright';
+    protected $watermarkImagePostion = self::IMAGE_TOP_RIGHT;
 
     /**
-     * Enable/disable downtime feature
+     * Enable/disable downtime feature.
      *
      * @var bool
      */
     protected $downtimeEnabled = false;
 
     /**
-     * Downtime image instance
+     * Downtime image instance.
      *
      * @var Image
      */
     protected $downtimeImage;
 
     /**
-     * Downtime image path
+     * Downtime image path.
      *
      * Supported image formats: GIF, JPEG, PNG
      *
@@ -103,14 +132,14 @@ class Overlay
     protected $downtimeImagePath = '';
 
     /**
-     * Downtime image position
+     * Downtime image position.
      *
      * @var string
      */
-    protected $downtimeImagePosition = 'topright';
+    protected $downtimeImagePosition = self::IMAGE_TOP_RIGHT;
 
     /**
-     * Downtime start
+     * Downtime start.
      *
      * Format: HH:MM:SS
      *
@@ -119,7 +148,7 @@ class Overlay
     protected $downtimeStart = '';
 
     /**
-     * Downtime end
+     * Downtime end.
      *
      * Format: HH:MM:SS
      *
@@ -128,87 +157,86 @@ class Overlay
     protected $downtimeEnd = '';
 
     /**
-     * Enable/disable informational text feature
+     * Enable/disable informational text feature.
      *
      * @var bool
      */
     protected $infoTextEnabled = false;
 
     /**
-     * Informational text content
+     * Informational text content.
      *
      * @var string
      */
     protected $infoTextContent = '';
 
     /**
-     * Informational text font file
+     * Informational text font file.
      *
      * @var string
      */
-    protected $infoTextFont = 'CALIBRI.TTF';
+    protected $infoTextFont = __DIR__.'/../data/vera.ttf';
 
     /**
-     * Informational text font size in pixels
+     * Informational text font size in pixels.
      *
      * @var int
      */
     protected $infoTextFontSize = 10;
 
     /**
-     * Informational text X position
+     * Informational text X position.
      *
      * @var int
      */
-    protected $infoTextPositionX = 5; // text x-position
+    protected $infoTextPositionX = 5;
 
     /**
-     * Informational text Y position
+     * Informational text Y position.
      *
      * @var int
      */
-    protected $infoTextPositionY = 235; // text y-position
+    protected $infoTextPositionY = 235;
 
     /**
-     * Informational text color
+     * Informational text color.
      *
      * Format: array( (int) $red, (int) $green, (int) $blue )
      * Valid integer values: 0-255
      *
      * @var array
      */
-    protected $infoTextColor = array(255, 255, 255);
+    protected $infoTextColor = [255, 255, 255];
 
     /**
-     * Enable/disable informational text border feature
+     * Enable/disable informational text border feature.
      *
      * @var bool
      */
     protected $infoTextBorderEnabled = true;
 
     /**
-     * Informational text border color
+     * Informational text border color.
      *
      * Format: array( (int) $red, (int) $green, (int) $blue )
      * Valid integer values: 0-255
      *
      * @var array
      */
-    protected $infoTextBorderColor = array(50, 50, 50);
+    protected $infoTextBorderColor = [50, 50, 50];
 
     /**
-     * Valid image position values
+     * Valid image position values.
      *
      * @var array
      */
-    protected $validImagePositions
-        = array(
-            'topleft',
-            'topright',
-            'bottomleft',
-            'bottomright',
-            'center'
-        );
+    protected $validImagePositions = [
+        self::IMAGE_TOP_LEFT,
+        self::IMAGE_TOP_RIGHT,
+        self::IMG_BOTTOM_LEFT,
+        self::IMG_BOTTOM_RIGHT,
+        self::IMG_CENTER,
+    ];
 
     /**
      * Sets the output image scale (percent), based on the source image.
@@ -217,9 +245,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setOutputImageScale($scale)
+    public function setOutputImageScale(int $scale): self
     {
-        $this->outputImageScale = (int)$scale;
+        $this->outputImageScale = $scale;
 
         return $this;
     }
@@ -231,9 +259,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setWebcamImagePath($path)
+    public function setWebcamImagePath(string $path): self
     {
-        $this->webcamImagePath = (string)$path;
+        $this->webcamImagePath = $path;
 
         return $this;
     }
@@ -245,9 +273,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setWatermarkEnabled($bool)
+    public function setWatermarkEnabled(bool $bool): self
     {
-        $this->watermarkEnabled = (bool)$bool;
+        $this->watermarkEnabled = $bool;
 
         return $this;
     }
@@ -259,9 +287,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setWatermarkImagePath($path)
+    public function setWatermarkImagePath(string $path): self
     {
-        $this->watermarkImagePath = (string)$path;
+        $this->watermarkImagePath = $path;
 
         return $this;
     }
@@ -272,13 +300,14 @@ class Overlay
      * @param string $position Image position string.
      *
      * @return $this
+     *
      * @throws \UnexpectedValueException Thrown if an invalid image position
-     * string was given.
+     *                                   string was given.
      */
-    public function setWatermarkImagePosition($position)
+    public function setWatermarkImagePosition(string $position): self
     {
         $this->validateImagePosition($position);
-        $this->watermarkImagePostion = (string)$position;
+        $this->watermarkImagePostion = $position;
 
         return $this;
     }
@@ -290,9 +319,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setDowntimeEnabled($bool)
+    public function setDowntimeEnabled(bool $bool): self
     {
-        $this->downtimeEnabled = (bool)$bool;
+        $this->downtimeEnabled = $bool;
 
         return $this;
     }
@@ -304,9 +333,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setDowntimeImagePath($path)
+    public function setDowntimeImagePath(string $path): self
     {
-        $this->downtimeImagePath = (string)$path;
+        $this->downtimeImagePath = $path;
 
         return $this;
     }
@@ -317,13 +346,14 @@ class Overlay
      * @param string $position Image position string.
      *
      * @return $this
+     *
      * @throws \UnexpectedValueException Thrown if an invalid image position
-     * string was given.
+     *                                   string was given.
      */
-    public function setDowntimeImagePosition($position)
+    public function setDowntimeImagePosition(string $position): self
     {
         $this->validateImagePosition($position);
-        $this->downtimeImagePosition = (string)$position;
+        $this->downtimeImagePosition = $position;
 
         return $this;
     }
@@ -336,12 +366,14 @@ class Overlay
      * @param string $time Downtime start time.
      *
      * @return $this
+     *
      * @throws \InvalidArgumentException Thrown if an invalid time string was given.
      */
-    public function setDowntimeStart($time)
+    public function setDowntimeStart(string $time): self
     {
         $this->validateTime($time);
-        $this->downtimeStart = (string)$time;
+        $this->downtimeStart = $time;
+
         return $this;
     }
 
@@ -353,12 +385,14 @@ class Overlay
      * @param string $time Downtime end time.
      *
      * @return $this
+     *
      * @throws \InvalidArgumentException Thrown if an invalid time string was given.
      */
-    public function setDowntimeEnd($time)
+    public function setDowntimeEnd(string $time): self
     {
         $this->validateTime($time);
-        $this->downtimeEnd = (string)$time;
+        $this->downtimeEnd = $time;
+
         return $this;
     }
 
@@ -369,9 +403,10 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextEnabled($bool)
+    public function setInfoTextEnabled(bool $bool): self
     {
-        $this->infoTextEnabled = (bool)$bool;
+        $this->infoTextEnabled = $bool;
+
         return $this;
     }
 
@@ -382,9 +417,10 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextContent($text)
+    public function setInfoTextContent(string $text): self
     {
-        $this->infoTextContent = (string)$text;
+        $this->infoTextContent = $text;
+
         return $this;
     }
 
@@ -395,9 +431,9 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextFont($fontPath)
+    public function setInfoTextFont(string $fontPath): self
     {
-        $this->infoTextFont = (string)$fontPath;
+        $this->infoTextFont = $fontPath;
 
         return $this;
     }
@@ -409,9 +445,10 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextFontSize($size)
+    public function setInfoTextFontSize(int $size): self
     {
-        $this->infoTextFontSize = (int)$size;
+        $this->infoTextFontSize = $size;
+
         return $this;
     }
 
@@ -422,9 +459,10 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextPositionX($position)
+    public function setInfoTextPositionX(int $position): self
     {
-        $this->infoTextPositionX = (int)$position;
+        $this->infoTextPositionX = $position;
+
         return $this;
     }
 
@@ -435,9 +473,10 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextPositionY($position)
+    public function setInfoTextPositionY(int $position): self
     {
-        $this->infoTextPositionY = (int)$position;
+        $this->infoTextPositionY = $position;
+
         return $this;
     }
 
@@ -451,10 +490,11 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextColor(array $color)
+    public function setInfoTextColor(array $color): self
     {
         $this->validateColor($color);
         $this->infoTextColor = $color;
+
         return $this;
     }
 
@@ -465,9 +505,10 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextBorderEnabled($bool)
+    public function setInfoTextBorderEnabled(bool $bool): self
     {
-        $this->infoTextBorderEnabled = (bool)$bool;
+        $this->infoTextBorderEnabled = $bool;
+
         return $this;
     }
 
@@ -481,19 +522,18 @@ class Overlay
      *
      * @return $this
      */
-    public function setInfoTextBorderColor(array $color)
+    public function setInfoTextBorderColor(array $color): self
     {
         $this->validateColor($color);
         $this->infoTextBorderColor = $color;
+
         return $this;
     }
 
     /**
      * Returns all valid image position strings.
-     *
-     * @return array
      */
-    public function getValidImagePositions()
+    public function getValidImagePositions(): array
     {
         return $this->validImagePositions;
     }
@@ -505,7 +545,7 @@ class Overlay
      *
      * @throws \Exception
      */
-    public function render()
+    public function render(): self
     {
         // read watermark image
         if (!empty($this->watermarkEnabled)) {
@@ -528,15 +568,14 @@ class Overlay
             );
         } catch (\Exception $e) {
             /*
-             * If there is no downtime image configured and we fail to load the
-             * webcam image, this is a fatal error and we pass on the exception.
+             * If there is no downtime image configured, and we fail to load the
+             * webcam image, this is a fatal error, and we pass on the exception.
              *
              * Else, we render the downtime image instead.
              */
             if (!$this->downtimeImage instanceof Image) {
                 throw $e;
             }
-
         }
 
         // define output image dimensions
@@ -555,8 +594,8 @@ class Overlay
 
         // create output image
         $this->outputImage = Image::getInstanceByCreate(
-            $width,
-            $height
+            (int) $width,
+            (int) $height
         );
 
         /*
@@ -603,7 +642,8 @@ class Overlay
                                 $this->infoTextColor[1],
                                 $this->infoTextColor[2]
                             )
-                        );
+                        )
+                    ;
 
                     // setup border text decorator
                     if ($this->infoTextBorderEnabled) {
@@ -682,11 +722,10 @@ class Overlay
      *
      * @param string $position Image position string.
      *
-     * @return void
      * @throws \UnexpectedValueException Thrown if an invalid image position
-     * string was given.
+     *                                   string was given.
      */
-    protected function validateImagePosition($position)
+    protected function validateImagePosition(string $position)
     {
         if (!in_array($position, $this->validImagePositions)) {
             throw new \UnexpectedValueException(
@@ -704,10 +743,9 @@ class Overlay
      *
      * @param string $time time string
      *
-     * @return void
      * @throws \InvalidArgumentException Thrown if an invalid time string was given.
      */
-    protected function validateTime($time)
+    protected function validateTime(string $time)
     {
         if (!preg_match('/([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]/', $time)) {
             throw new \InvalidArgumentException(
@@ -724,9 +762,8 @@ class Overlay
      *
      * @param array $color color array
      *
-     * @return void
      * @throws \InvalidArgumentException Thrown if the color array uses an
-     * invalid format.
+     *                                   invalid format.
      */
     protected function validateColor(array $color)
     {
@@ -737,17 +774,15 @@ class Overlay
 
     /**
      * Checks if the current time falls into the set downtime period.
-     *
-     * @return bool
      */
-    protected function isDownTime()
+    protected function isDownTime(): bool
     {
         if (!$this->downtimeEnabled) {
             return false;
         }
 
         /*
-         * This is a quite confusing hack and I'd be happy if someone knew a
+         * This is a quite confusing hack, and I'd be happy if someone knew a
          * better way to get around the problem that the end time might actually
          * be the next day and therefore smaller than the start time.
          */
@@ -756,7 +791,7 @@ class Overlay
         $end = str_replace(':', '', $this->downtimeEnd);
 
         if ($start < $end) {
-            if (($now >= $start && $now <= $end)) {
+            if ($now >= $start && $now <= $end) {
                 return true;
             }
         } elseif ($start > $end) {
@@ -776,17 +811,14 @@ class Overlay
      * @param Image  $overlay  Image object to be merged into the target object.
      * @param string $position One of $this->validImagePositions.
      *
-     * @return array Array containing x and y coordinates.
+     * @return int[] Array containing x and y coordinates.
      */
-    protected function determineOverlayPosition(
-        Image $target,
-        Image $overlay,
-        $position
-    ) {
-        $coordinates = array(
+    protected function determineOverlayPosition(Image $target, Image $overlay, string $position): array
+    {
+        $coordinates = [
             'x' => 0,
-            'y' => 0
-        );
+            'y' => 0,
+        ];
 
         /**
          * The overlay image might be bigger than the target image. In this
@@ -803,31 +835,34 @@ class Overlay
         }
 
         switch ($position) {
-            case 'topleft':
+            case self::IMAGE_TOP_LEFT:
                 $coordinates['x'] = 0;
                 $coordinates['y'] = 0;
+
                 break;
 
-            case 'topright':
+            case self::IMAGE_TOP_RIGHT:
                 $coordinates['x'] = $target->getWidth() - $overlayWidth;
                 $coordinates['y'] = 0;
+
                 break;
 
-            case 'bottomleft':
+            case self::IMG_BOTTOM_LEFT:
                 $coordinates['x'] = 0;
                 $coordinates['y'] = $target->getHeight() - $overlayHeight;
+
                 break;
 
-            case 'bottomright':
+            case self::IMG_BOTTOM_RIGHT:
                 $coordinates['x'] = $target->getWidth() - $overlayWidth;
                 $coordinates['y'] = $target->getHeight() - $overlayHeight;
+
                 break;
 
-            case 'center':
-                $coordinates['x'] = ($target->getWidth() / 2) - ($overlayWidth
-                        / 2);
-                $coordinates['y'] = ($target->getHeight() / 2) - ($overlayHeight
-                        / 2);
+            case self::IMG_CENTER:
+                $coordinates['x'] = (int) round(($target->getWidth() / 2) - ($overlayWidth / 2));
+                $coordinates['y'] = (int) round(($target->getHeight() / 2) - ($overlayHeight / 2));
+
                 break;
         }
 
@@ -836,10 +871,8 @@ class Overlay
 
     /**
      * Returns the current time.
-     *
-     * @return string
      */
-    protected function getTime()
+    protected function getTime(): string
     {
         return date('His');
     }

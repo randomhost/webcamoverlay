@@ -1,7 +1,15 @@
-[![Build Status][0]][1]
+[![Build Status][1]][2]
 
-randomhost/webcamoverlay
-========================
+# randomhost/webcamoverlay
+
+<!-- TOC -->
+* [1. Purpose](#1-purpose)
+* [2. Example](#2-example)
+* [3. Usage](#3-usage)
+* [4. License](#4-license)
+<!-- TOC -->
+
+## 1. Purpose
 
 This package was developed to compensate for the lack of image overlay
 capabilities of some less sophisticated IP cameras. It takes the original image
@@ -13,25 +21,29 @@ the image on the fly before displaying it to the website visitor.
 - picture watermarking with configurable image positions
 - text watermarking (original image "modified" date + freely configurable text)
 - configurable timed overlay image ("downtime" picture)
+- image scaling
 
-Usage
------
+## 2. Example
+
+| Original Image       | Modified Image       |
+|----------------------|----------------------|
+| ![Original Image][3] | ![Modified Image][4] |
+
+## 3. Usage
 
 A basic approach at using this package could look like this:
 
 ```php
 <?php
-namespace randomhost\Image\Webcam;
+
+declare(strict_types=1);
+
+use \randomhost\Image\Webcam\Overlay;
 
 require_once '/path/to/vendor/autoload.php';
 
-// get WebcamOverlay instance
 $overlay = new Overlay();
-
-// set basic webcam image properties
 $overlay->setWebcamImagePath('webcam.jpg');
-
-// render image
 $overlay->render();
 ```
 
@@ -39,14 +51,16 @@ This will instantiate the class, set the name of the uploaded webcam image and
 just render it without any overlay.
 
 Assuming that you named this file `webcam.php`, you should now be able to
-access your webcam image at `http://example.com/webcam.php`
+access your webcam image at `https://example.com/webcam.php`
 
-A more detailed example can be found in `src/www/webcam/index.php`.
+A more detailed example can be found in [`src/www/index.php`](src/www/index.php).
 
-License
--------
+## 4. License
 
 See LICENSE.txt for full license details.
 
-[0]: https://travis-ci.org/randomhost/webcamoverlay.svg
-[1]: https://travis-ci.org/randomhost/webcamoverlay
+
+[1]: https://github.com/randomhost/webcamoverlay/actions/workflows/php.yml/badge.svg
+[2]: https://github.com/randomhost/webcamoverlay/actions/workflows/php.yml
+[3]: src/data/webcam.jpg
+[4]: src/data/example.png
